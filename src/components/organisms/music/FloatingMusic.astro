@@ -1,0 +1,11 @@
+---
+import FloatingMusicButton from "./FloatingMusicButton.svelte";
+import { Icon } from "astro-icon/components";
+import type { ResolvedMusicOptions } from "@/config/musicConfig";
+import type { FloatingMusicLabels } from "./floating-music-types";
+interface Props { options: ResolvedMusicOptions; labels: FloatingMusicLabels; size?: "small" | "regular"; panelMotion?: "auto" | "slide"; panelDuration?: number; }
+const { options, labels, size, panelMotion, panelDuration } = Astro.props;
+---
+<FloatingMusicButton client:load {options} {labels} {size} {panelMotion} {panelDuration}>
+  <Icon name="material-symbols:music-note-rounded" />
+</FloatingMusicButton>

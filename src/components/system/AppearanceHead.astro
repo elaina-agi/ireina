@@ -1,0 +1,43 @@
+---
+// 外观样式作为普通样式表随页面打包，浏览器可缓存。规则都以 html[data-*] 外观属性为前提，
+// 外观扩展关闭（enable: false）时这些属性不会被设置，样式不会生效。
+import "../../appearance/appearance.css";
+import { APPEARANCE_RANGES, WALLPAPER_MODES, appearanceConfig as config } from "../../appearance/config";
+import { getAppearanceCapabilities, getAppearanceDefaults } from "../../appearance/defaults";
+import { siteConfig } from "@/config";
+const { page = "" } = Astro.props;
+const defaults = getAppearanceDefaults();
+const capabilities = getAppearanceCapabilities();
+const defaultMode = config.defaultMode ?? siteConfig.wallpaperMode.defaultMode;
+---
+{config.enable && (
+  <script is:inline data-swup-ignore-script define:vars={{ defaults, defaultMode, modes: WALLPAPER_MODES, ranges: APPEARANCE_RANGES, controls: config.controls, effects: config.wallpaperEffects, capabilities, wide: config.wideScreen, page }}>
+    // 页面显示前恢复外观偏好；规则与 src/appearance/preferences.ts 的 normalizePreferences 一致，
+    // 模式列表、取值范围和默认值都来自 src/appearance/config.ts / defaults.ts。
+    (() => {
+      const root = document.documentElement;
+      let saved = {}, mode;
+      try { saved = JSON.parse(localStorage.getItem('ireina-appearance') || 'null') || {}; mode = localStorage.getItem('wallpaper-mode'); } catch {}
+      if (!saved || typeof saved !== 'object') saved = {};
+      const number = key => {
+        const { min, max, step } = ranges[key];
+        return effects[key] && typeof saved[key] === 'number' && Number.isFinite(saved[key]) ? Math.round(Math.min(max, Math.max(min, saved[key])) / step) * step : defaults[key];
+      };
+      const boolean = key => controls[key] && typeof saved[key] === 'boolean' ? saved[key] : defaults[key];
+      mode = modes.includes(mode) ? mode : defaultMode;
+      root.dataset.wallpaperMode = mode;
+      root.dataset.ireinaPage = page;
+      root.dataset.ireinaWideScreen = String(boolean('wideScreen'));
+      root.dataset.ireinaBannerTitle = String(capabilities.bannerTitle && boolean('bannerTitle'));
+      root.dataset.ireinaWaves = String(capabilities.waves && boolean('waves'));
+      root.dataset.ireinaSakura = String(boolean('sakura'));
+      root.style.setProperty('--ireina-wallpaper-opacity', String(number('opacity')));
+      root.style.setProperty('--ireina-wallpaper-blur', number('blur') + 'px');
+      root.style.setProperty('--ireina-card-alpha', number('cardOpacity') * 100 + '%');
+      root.style.setProperty('--ireina-wide-width', wide.pageWidth);
+      root.style.setProperty('--ireina-wide-large-width', wide.largePageWidth);
+      root.style.setProperty('--ireina-reading-width', wide.readingWidth);
+      root.style.setProperty('--ireina-reading-large-width', wide.largeReadingWidth);
+    })();
+  </script>
+)}

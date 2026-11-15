@@ -1,0 +1,47 @@
+/* Mizuki 紧凑结构适配;配色和动效使用本站令牌。 */
+#floating-music-panel { width:100%; max-height:calc(100dvh - var(--music-anchor-bottom, 13rem) - var(--m3e-space-4)); overflow:auto; padding:var(--m3e-space-4); border:1px solid var(--outline-variant); border-radius:var(--shape-corner-l); background:var(--surface-container-lowest); color:var(--on-surface); box-shadow:var(--m3e-elevation-2); font:var(--m3e-type-body-medium); }
+#floating-music-panel .music-header { display:flex; align-items:center; gap:var(--m3e-space-3); }
+#floating-music-panel .music-cover { position:relative; width:calc(var(--m3e-space-8) * 2); height:calc(var(--m3e-space-8) * 2); flex:none; border-radius:var(--shape-corner-full); overflow:hidden; padding:0; border:1px solid var(--outline-variant); background:var(--surface-container-high); color:var(--primary); cursor:pointer; display:grid; place-items:center; }
+#floating-music-panel .music-cover img { width:100%; height:100%; object-fit:cover; animation:music-cover-spin var(--m3e-duration-ambient-medium) linear infinite paused; }
+#floating-music-panel .music-cover img.spinning { animation-play-state:running; }
+#floating-music-panel .music-cover > svg { width:var(--m3e-space-6); height:var(--m3e-space-6); }
+/* Fixed white/dark is only the readability overlay on arbitrary cover art. */
+#floating-music-panel .music-cover-action { position:absolute; inset:0; display:grid; place-items:center; color:white; background:rgb(0 0 0 / .25); opacity:0; transition:opacity var(--m3e-duration-short) var(--m3e-easing-standard); }
+#floating-music-panel .music-cover:hover .music-cover-action, #floating-music-panel .music-cover:focus-visible .music-cover-action { opacity:1; }
+#floating-music-panel .music-cover-action svg { width:var(--m3e-space-6); height:var(--m3e-space-6); }
+#floating-music-panel .music-track { display:flex; flex-direction:column; min-width:0; flex:1; gap:var(--m3e-space-1); }
+#floating-music-panel .music-track > strong { font:var(--m3e-type-label-large); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#floating-music-panel .music-track > span { color:var(--on-surface-variant); font:var(--m3e-type-label-medium); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#floating-music-panel .music-meta { display:flex; align-items:center; justify-content:space-between; gap:var(--m3e-space-1); }
+#floating-music-panel .music-time { white-space:nowrap; font:var(--m3e-type-label-small); color:var(--on-surface-variant); }
+#floating-music-panel .music-volume { display:flex; align-items:center; min-width:0; gap:var(--m3e-space-1); }
+#floating-music-panel .music-mute { display:grid; place-items:center; width:var(--m3e-space-8); height:var(--m3e-space-8); padding:0; border:0; border-radius:var(--shape-corner-s); background:transparent; color:var(--on-surface-variant); cursor:pointer; }
+#floating-music-panel .music-mute svg { width:var(--m3e-space-4); height:var(--m3e-space-4); }
+#floating-music-panel input[type="range"] { appearance:none; display:block; width:100%; min-width:0; height:var(--m3e-space-8); margin:0; background:transparent; cursor:pointer; }
+#floating-music-panel input[type="range"]::-webkit-slider-runnable-track { height:var(--m3e-space-1); border-radius:var(--shape-corner-full); background:linear-gradient(to right,var(--primary) 0 var(--range-fill),var(--outline-variant) var(--range-fill) 100%); }
+#floating-music-panel input[type="range"]::-webkit-slider-thumb { appearance:none; width:var(--m3e-space-2); height:var(--m3e-space-2); margin-top:calc(var(--m3e-space-1) / -2); background:var(--primary); border-radius:var(--shape-corner-full); opacity:0; transition:opacity var(--m3e-duration-short) var(--m3e-easing-standard); }
+#floating-music-panel input[type="range"]:hover::-webkit-slider-thumb, #floating-music-panel input[type="range"]:focus-visible::-webkit-slider-thumb { opacity:1; }
+#floating-music-panel input[type="range"]::-moz-range-track { height:var(--m3e-space-1); border-radius:var(--shape-corner-full); background:var(--outline-variant); }
+#floating-music-panel input[type="range"]::-moz-range-progress { background:var(--primary); height:var(--m3e-space-1); }
+#floating-music-panel input[type="range"]::-moz-range-thumb { width:var(--m3e-space-2); height:var(--m3e-space-2); border:0; border-radius:var(--shape-corner-full); background:var(--primary); }
+#floating-music-panel .music-volume input { width:calc(var(--m3e-space-8) * 2); }
+#floating-music-panel .music-progress { margin-block:var(--m3e-space-1); }
+#floating-music-panel .music-transport { display:flex; align-items:center; justify-content:space-between; gap:var(--m3e-space-1); }
+#floating-music-panel .music-control { display:grid; place-items:center; width:calc(var(--m3e-space-6) * 2); height:calc(var(--m3e-space-6) * 2); padding:0; border:0; border-radius:var(--shape-corner-full); color:var(--on-surface-variant); background:transparent; cursor:pointer; transition:color var(--m3e-duration-short) var(--m3e-easing-standard),transform var(--m3e-duration-short) var(--m3e-easing-standard); }
+#floating-music-panel .music-control:hover { color:var(--primary); }
+#floating-music-panel .music-control:active { transform:scale(.95); }
+#floating-music-panel .music-control.music-play { background:var(--primary-container); color:var(--on-primary-container); }
+#floating-music-panel .music-control svg { width:var(--m3e-space-5); height:var(--m3e-space-5); }
+#floating-music-panel .music-play svg { width:var(--m3e-space-6); height:var(--m3e-space-6); }
+#floating-music-panel .music-playlist { list-style:none; padding:var(--m3e-space-2) 0 0; margin:0; max-height:12rem; overflow:auto; }
+#floating-music-panel .music-playlist button { display:block; width:100%; text-align:start; padding:var(--m3e-space-3) var(--m3e-space-2); border:0; border-radius:var(--shape-corner-s); color:var(--on-surface); background:transparent; cursor:pointer; }
+#floating-music-panel .music-playlist button[aria-current] { background:var(--secondary-container); color:var(--on-secondary-container); }
+#floating-music-panel .music-copy { min-width:0; display:flex; flex-direction:column; }
+#floating-music-panel .music-copy > strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font:var(--m3e-type-label-large); }
+#floating-music-panel .music-copy > span { font:var(--m3e-type-label-medium); }
+#floating-music-panel .music-error { color:var(--error); margin:var(--m3e-space-2) 0; }
+#floating-music-panel button:focus-visible, #floating-music-panel input:focus-visible { outline:2px solid var(--primary); outline-offset:2px; }
+@keyframes music-cover-spin { to { transform:rotate(360deg); } }
+html.motion-reduced #floating-music-panel .music-cover img { animation:none; }
+html.motion-reduced #floating-music-panel .music-control { transition:none; }
+html.motion-reduced #floating-music-panel .music-control:active { transform:none; }

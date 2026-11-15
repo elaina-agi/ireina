@@ -1,0 +1,5 @@
+/* 看板娘的气泡和按钮跟着主题的动态配色走 */
+:root {
+  --kb-primary: var(--primary);
+  --kb-stage-ease: var(--m3e-easing-emphasized-decelerate);
+}

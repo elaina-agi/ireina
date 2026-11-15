@@ -1,0 +1,32 @@
+/* 同一媒体层在三种壁纸模式之间复用；主题原图继续作为加载失败回退。 */
+.ireina-wall {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  transition: opacity calc(var(--m3e-duration-long, 400ms) * 3) var(--m3e-easing-standard, ease);
+  pointer-events: none;
+}
+
+.ireina-wall.is-on { opacity: 1; }
+.ireina-wall[hidden] { display: none; }
+
+/* Ambient image-only zoom: deliberately slow, derived from the theme ambient token. */
+.ireina-wall--kenburns.is-on {
+  animation: ireina-kenburns calc(var(--m3e-duration-ambient-long, 13s) * 2) var(--m3e-easing-standard, ease) infinite alternate;
+}
+.ireina-wall.is-paused { animation-play-state: paused; }
+
+@keyframes ireina-kenburns {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+
+/* The blog preference alone controls wallpaper motion; system preferences do not override it. */
+html.motion-reduced .ireina-wall {
+  transition: none;
+  animation: none;
+}

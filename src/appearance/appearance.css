@@ -1,0 +1,59 @@
+/* 用户明确选择的 Overlay 是对 Shirone 实心表面的局部例外。
+   只混合背景 alpha，不降低卡片 opacity，也不修改 M3 全局颜色令牌。 */
+html[data-wallpaper-mode="fullscreen"] { --banner-stage-height: 100svh; }
+html[data-wallpaper-mode="fullscreen"] body[data-banner-layout="banner"] #main-layout { top: calc(100svh + var(--m3e-space-4)); }
+html[data-wallpaper-mode="fullscreen"] body[data-banner-layout="banner"] #top-row { height: calc(100svh - 4rem); }
+html[data-wallpaper-mode="fullscreen"] #banner-wrapper { height: 100svh; }
+html[data-wallpaper-mode="overlay"] #banner-wrapper {
+  display: block;
+  position: fixed;
+  inset: 0;
+  height: 100dvh;
+  z-index: -10;
+  pointer-events: none;
+  background: transparent;
+  opacity: var(--ireina-wallpaper-opacity, .8);
+  filter: blur(var(--ireina-wallpaper-blur, 1.5px));
+  /* Blur overscan avoids a bright edge without blurring any foreground text. */
+  transform: scale(1.025);
+}
+html[data-wallpaper-mode="overlay"] #banner-wrapper .banner-stage__copy,
+html[data-wallpaper-mode="overlay"] #banner-wrapper .banner-stage__scrim,
+html[data-wallpaper-mode="overlay"] #banner-wrapper .banner-waves { display: none; }
+html[data-wallpaper-mode="overlay"] #main-layout { top: 5.5rem; }
+html[data-wallpaper-mode="overlay"] #top-row { height: auto; }
+html[data-ireina-banner-title="false"] #banner-wrapper [data-banner-home-copy],
+html[data-ireina-waves="false"] #banner-wrapper .banner-waves { display: none; }
+
+/* Frame-level surfaces: nested controls and code/media keep their normal contrast. */
+html[data-wallpaper-mode="overlay"] #main-layout .m3-card,
+html[data-wallpaper-mode="overlay"] #main-layout .post-card,
+html[data-wallpaper-mode="overlay"] #main-layout .m3-music-sidebar {
+  background: color-mix(in oklab, var(--card-bg) var(--ireina-card-alpha, 80%), transparent);
+  backdrop-filter: blur(var(--m3e-space-3));
+}
+html[data-wallpaper-mode="overlay"] #navbar,
+html[data-wallpaper-mode="overlay"] #display-setting {
+  background: color-mix(in oklab, var(--surface-container) var(--ireina-card-alpha, 80%), transparent);
+  backdrop-filter: blur(var(--m3e-space-3));
+}
+html[data-wallpaper-mode="overlay"] #display-setting .m3-panel-stack,
+html[data-wallpaper-mode="overlay"] #display-setting .m3-panel-stack > * {
+  background: transparent;
+}
+/* None deliberately means an opaque app bar, not a translucent leftover. */
+html[data-wallpaper-mode="none"] #navbar { background: var(--surface); }
+
+/* Match Mizuki's CSS-viewport breakpoints, but retain Shirone's default 85/96rem
+   when disabled and cap ordinary reading blocks independently from the frame. */
+@media (min-width: 1920px) {
+  html[data-ireina-page="post"][data-ireina-wide-screen="true"] #main-layout > div { max-width: var(--ireina-wide-width, 112rem); }
+  html[data-ireina-page="post"][data-ireina-wide-screen="true"] #main-content-column .custom-md > :not(pre, table, .mermaid, .image-grid, .image-grid-container, .expressive-code) { max-width: min(100%, var(--ireina-reading-width, 65rem)); }
+}
+@media (min-width: 3200px) {
+  html[data-ireina-page="post"][data-ireina-wide-screen="true"] #main-layout > div { max-width: var(--ireina-wide-large-width, 128rem); }
+  html[data-ireina-page="post"][data-ireina-wide-screen="true"] #main-content-column .custom-md > :not(pre, table, .mermaid, .image-grid, .image-grid-container, .expressive-code) { max-width: min(100%, var(--ireina-reading-large-width, 72rem)); }
+}
+@media (max-width: 1023.98px) {
+  html[data-wallpaper-mode="fullscreen"] body[data-current-page="home"][data-banner-layout="banner"] #main-layout { top: 100svh; }
+}

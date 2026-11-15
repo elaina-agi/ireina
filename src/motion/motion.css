@@ -1,0 +1,10 @@
+/* The theme owns reduced-motion styles for normal elements. Backdrops are not
+ * matched by its universal pseudo selectors, so this narrowly scoped rule fills
+ * that gap. Important has the same accessibility ownership as the theme gate. */
+html.motion-reduced dialog::backdrop {
+  animation-duration: 0.01ms !important;
+  animation-delay: 0ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  transition-delay: 0ms !important;
+}

@@ -1,0 +1,138 @@
+---
+// 用户覆盖,不修改 shirones 依赖;这里只编排音乐 / 首页 / 回顶。
+import FloatingActionButton from "@components/molecules/FloatingActionButton.astro";
+import { Icon } from "astro-icon/components";
+import I18nKey from "@i18n/i18nKey";
+import { i18n } from "@i18n/translation";
+import { isWidgetVisibleOnPage } from "@utils/sidebar-page";
+import { fabConfig } from "@/config";
+import { musicConfig, resolveMusicOptions } from "@/config/musicConfig";
+import { sidebarConfig } from "@/config/sidebarConfig";
+import { BANNER_HEIGHT } from "@constants/constants";
+import type { SidebarPage } from "@/types/sidebarConfig";
+import type { MarkdownHeading } from "astro";
+import { floatingMusicConfig } from "../../floating/config";
+interface Props { headings?: MarkdownHeading[]; page?: SidebarPage; hasComments?: boolean; }
+const { page } = Astro.props;
+if (!fabConfig.enable) return null;
+const items = fabConfig.items.filter(item => item.enable);
+const home = items.find(item => item.type === "home");
+const top = items.find(item => item.type === "top");
+const options = floatingMusicConfig.enable && sidebarConfig.enable &&
+  sidebarConfig.components.some(widget => widget.type === "music" && widget.enable)
+  ? resolveMusicOptions(musicConfig) : null;
+// 禁用音乐时不进入 Svelte 模块图;面板本身在首次打开时才加载。
+const MusicButton = options ? (await import("./music/FloatingMusic.astro")).default : null;
+const musicLabels = options ? {
+  title: i18n(I18nKey.musicPlayerTitle), close: i18n(I18nKey.close),
+  play: i18n(I18nKey.musicPlay), pause: i18n(I18nKey.musicPause),
+  previous: i18n(I18nKey.musicPrevious), next: i18n(I18nKey.musicNext),
+  volume: i18n(I18nKey.musicVolume), progress: i18n(I18nKey.musicProgress),
+  empty: i18n(I18nKey.musicEmpty), loading: i18n(I18nKey.musicLoading),
+  playlist: i18n(I18nKey.musicShowPlaylist), hidePlaylist: i18n(I18nKey.musicHidePlaylist),
+  mute: i18n(I18nKey.musicMute), unmute: i18n(I18nKey.musicUnmute),
+  playbackMode: i18n(I18nKey.musicPlaybackMode),
+  modeSequence: i18n(I18nKey.musicModeSequence), modeRepeatOne: i18n(I18nKey.musicModeRepeatOne), modeShuffle: i18n(I18nKey.musicModeShuffle),
+  errors: {
+    "empty-playlist": i18n(I18nKey.musicErrorEmptyPlaylist),
+    "source-unavailable": i18n(I18nKey.musicErrorSourceUnavailable),
+    "autoplay-blocked": i18n(I18nKey.musicErrorAutoplayBlocked),
+    "invalid-track": i18n(I18nKey.musicErrorInvalidTrack),
+  },
+} : null;
+---
+<aside id="floating-controls" aria-label={i18n(I18nKey.floatingActions)}
+  class:list={["ireina-floating-controls", { "ireina-floating-controls--start": fabConfig.align === "start" }]}
+  data-banner-height={BANNER_HEIGHT}
+  style={`--fab-bottom: ${fabConfig.offset?.bottom ?? "var(--m3e-space-8)"}; --fab-inline-offset: ${fabConfig.offset?.right ?? "var(--m3e-space-6)"}`}
+>
+  {MusicButton && options && musicLabels && (
+    <div id="fab-music-btn" data-fab-item data-fab-slot data-fab-type="music">
+      <MusicButton {options} labels={musicLabels} size={fabConfig.size} panelMotion={floatingMusicConfig.panelMotion} panelDuration={floatingMusicConfig.panelDuration} />
+    </div>
+  )}
+  {home && (
+    <FloatingActionButton id="fab-home-btn" type="home" ariaLabel={i18n(I18nKey.backToHome)} devices={home.devices} pages={home.pages} size={fabConfig.size} onlySubPages={home.onlySubPages} class={!isWidgetVisibleOnPage(home.pages, page) || (home.onlySubPages && page === "home") ? "is-page-hidden" : ""}>
+      <Icon name="material-symbols:home-outline-rounded" />
+    </FloatingActionButton>
+  )}
+  {top && (
+    <FloatingActionButton id="fab-top-btn" type="top" ariaLabel={i18n(I18nKey.backToTop)} devices={top.devices} pages={top.pages} size={fabConfig.size} thresholdRatio={top.scrollThresholdRatio} class="is-hidden">
+      <Icon name="material-symbols:keyboard-arrow-up-rounded" />
+    </FloatingActionButton>
+  )}
+</aside>
+<style is:global>
+  .ireina-floating-controls {
+    position: fixed; right: var(--fab-inline-offset); bottom: var(--fab-bottom);
+    z-index: 45; display: flex; flex-direction: column; align-items: flex-end;
+    gap: var(--m3e-space-2); pointer-events: none;
+    transition: opacity var(--m3e-duration-short) var(--m3e-easing-standard), transform var(--m3e-duration-medium) var(--m3e-easing-standard);
+  }
+  .ireina-floating-controls--start { right: auto; left: var(--fab-inline-offset); }
+  .ireina-floating-controls.fab-scroll-hidden { opacity: 0; transform: translateY(var(--m3e-space-3)); pointer-events: none; }
+  .ireina-fab-slot, #fab-music-btn { position: relative; pointer-events: auto; }
+  .ireina-floating-controls .ireina-fab-action {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: calc(var(--m3e-space-6) * 2 + var(--m3e-space-2));
+    height: calc(var(--m3e-space-6) * 2 + var(--m3e-space-2));
+    padding: 0; border: 1px solid var(--outline-variant); border-radius: var(--shape-corner-l);
+    background: var(--surface-container-lowest); color: var(--primary); text-decoration: none;
+    box-shadow: var(--m3e-elevation-1); cursor: pointer; pointer-events: auto;
+    --m3e-state-color: var(--primary);
+    transition: background-color var(--m3e-duration-short) var(--m3e-easing-standard), box-shadow var(--m3e-duration-short) var(--m3e-easing-standard);
+  }
+  .ireina-floating-controls .ireina-fab-action:hover { box-shadow: var(--m3e-elevation-2); }
+  .ireina-floating-controls .ireina-fab-action:focus-visible { outline: 2px solid var(--primary); outline-offset: var(--m3e-space-1); }
+  .ireina-floating-controls .ireina-fab-action svg { width: var(--m3e-space-6); height: var(--m3e-space-6); }
+  .ireina-floating-controls .ireina-fab-action[data-size="small"] { width: calc(var(--m3e-space-6) * 2); height: calc(var(--m3e-space-6) * 2); }
+  .ireina-floating-controls .ireina-fab-action[data-playing] { background: var(--primary-container); color: var(--on-primary-container); }
+  html.motion-reduced .ireina-floating-controls, html.motion-reduced .ireina-floating-controls .ireina-fab-action { transition: none; }
+</style>
+<script>
+  import { prefersReducedMotion } from "../../motion/policy";
+  const controls = document.getElementById("floating-controls");
+  const topButton = document.getElementById("fab-top-btn");
+  // 当前三按钮模式只同步回顶阈值;音乐打开时不会被移动端下滚策略设为 inert。
+  // 页面可见性只在路由变化时重算；滚动/缩放只更新回顶按钮，并按动画帧合并。
+  const syncPages = () => {
+    const currentPage = document.getElementById("swup-container")?.dataset.currentPage;
+    controls?.querySelectorAll<HTMLElement>("[data-fab-item]").forEach(item => {
+      const pages = item.dataset.fabPages?.split(",").filter(Boolean) ?? [];
+      const allowed = (!pages.length || pages.includes(currentPage ?? "")) &&
+        (item.dataset.fabOnlySubPages !== "true" || currentPage !== "home");
+      item.classList.toggle("is-page-hidden", !allowed);
+      if (item !== topButton) item.toggleAttribute("inert", !allowed);
+    });
+  };
+  const configured = Number.parseFloat(topButton?.dataset.fabThreshold ?? "");
+  const ratio = Number.isFinite(configured) ? configured : Number(controls?.dataset.bannerHeight || 35);
+  let topVisible: boolean | undefined;
+  const syncTop = () => {
+    if (!topButton) return;
+    const visible = !topButton.classList.contains("is-page-hidden") && window.scrollY > window.innerHeight * ratio / 100;
+    if (visible === topVisible) return;
+    topVisible = visible;
+    topButton.hidden = !visible;
+    topButton.classList.remove("is-hidden");
+    topButton.toggleAttribute("inert", !visible);
+  };
+  let frame = 0;
+  const scheduleTop = () => {
+    if (frame) return;
+    frame = requestAnimationFrame(() => { frame = 0; syncTop(); });
+  };
+  const sync = () => { syncPages(); topVisible = undefined; syncTop(); };
+  sync();
+  window.addEventListener("scroll", scheduleTop, { passive: true });
+  window.addEventListener("resize", scheduleTop, { passive: true });
+  const bind = () => {
+    window.swup?.hooks.on("content:replace", sync);
+    window.swup?.hooks.on("page:view", sync);
+  };
+  if (window.swup) bind(); else document.addEventListener("swup:enable", bind, { once: true });
+  controls?.addEventListener("click", event => {
+    const target = event.target as Element;
+    if (target.closest("#fab-top-btn")) window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? "instant" : "smooth" });
+  });
+</script>

@@ -1,0 +1,40 @@
+{
+  "name": "ireina",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.6.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check --minimumSeverity warning",
+    "test:motion": "node --test tests/motion-*.test.mjs",
+    "test:site": "playwright test tests/site/motion.spec.ts tests/site/a11y.spec.ts tests/site/friends.spec.ts",
+    "test:wallpaper": "node --test tests/wallpaper-*.test.mjs",
+    "test:friends": "node --test tests/friend-apply-*.test.mjs"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/svelte": "^9.0.1",
+    "@iconify-json/fa6-brands": "^1.2.6",
+    "@iconify-json/fa6-regular": "^1.2.4",
+    "@iconify-json/fa6-solid": "^1.2.4",
+    "@iconify-json/material-symbols": "^1.2.93",
+    "@iconify-json/simple-icons": "^1.2.93",
+    "astro": "^7.3.5",
+    "astro-icon": "1.2.0",
+    "sharp": "^0.35.4",
+    "shirones": "0.1.5",
+    "svelte": "^5.57.1",
+    "twikoo-vercel": "1.7.24",
+    "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.65.0",
+    "postcss": "^8.5.32",
+    "postcss-selector-parser": "^7.1.7"
+  }
+}

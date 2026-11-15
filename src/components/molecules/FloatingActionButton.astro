@@ -1,0 +1,42 @@
+---
+// 用户覆盖:保留主题 FAB 控制器的数据契约,按钮用 SSR 图标与原生语义。
+import { resolveDeviceClasses } from "@utils/fab-responsive";
+import { pagesToAttribute } from "@utils/sidebar-page";
+import type { FabDeviceTarget } from "@/types/fabConfig";
+import type { SidebarPage } from "@/types/sidebarConfig";
+interface Props {
+  id?: string;
+  type: string;
+  ariaLabel: string;
+  devices?: FabDeviceTarget[];
+  pages?: SidebarPage[];
+  size?: "small" | "regular";
+  thresholdRatio?: number;
+  onlySubPages?: boolean;
+  targetSelector?: string;
+  class?: string;
+}
+const { id, type, ariaLabel, devices, pages, size = "regular", thresholdRatio, onlySubPages, targetSelector, class: className = "" } = Astro.props;
+const homeUrl = import.meta.env.BASE_URL;
+---
+<div id={id} data-fab-item data-fab-slot data-fab-type={type}
+  data-fab-pages={pagesToAttribute(pages)} data-fab-threshold={thresholdRatio}
+  data-fab-only-sub-pages={onlySubPages ? "true" : undefined}
+  data-fab-target-selector={targetSelector}
+  class:list={["ireina-fab-item", resolveDeviceClasses(devices), className]}
+>
+  {type === "home" ? (
+    <a href={homeUrl} class="ireina-fab-action m3-state-layer" data-size={size} aria-label={ariaLabel} title={ariaLabel}>
+      <slot />
+    </a>
+  ) : (
+    <button type="button" class="ireina-fab-action m3-state-layer" data-size={size} aria-label={ariaLabel} title={ariaLabel}>
+      <slot />
+    </button>
+  )}
+</div>
+<style>
+  .ireina-fab-item { pointer-events: auto; position: relative; }
+  .ireina-fab-item[hidden] { display: none; }
+  .ireina-fab-item.is-hidden, .ireina-fab-item.is-page-hidden { visibility: hidden; pointer-events: none; }
+</style>

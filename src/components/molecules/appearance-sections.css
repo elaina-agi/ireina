@@ -1,0 +1,39 @@
+#display-setting .ireina-settings-section { padding:var(--m3e-space-4); display:flex; flex-direction:column; gap:var(--m3e-space-2); }
+#display-setting .ireina-settings-heading { display:flex; align-items:center; justify-content:space-between; min-height:var(--m3e-space-10); gap:var(--m3e-space-2); }
+#display-setting .ireina-settings-heading h2 { margin:0; font:var(--m3e-type-title-medium); font-weight:700; color:var(--on-surface); border-inline-start:var(--m3e-space-1) solid var(--primary); padding-inline-start:var(--m3e-space-2); }
+#display-setting .ireina-settings-reset { border:0; display:grid; place-items:center; min-width:var(--m3e-space-10); min-height:var(--m3e-space-10); border-radius:var(--shape-corner-m); color:var(--primary); cursor:pointer; }
+#display-setting .ireina-settings-reset:disabled { opacity:.38; cursor:default; }
+#display-setting .ireina-wallpaper-modes { display:flex; flex-direction:column; gap:var(--m3e-space-1); }
+#display-setting .ireina-wallpaper-option { display:flex; align-items:center; gap:var(--m3e-space-3); min-height:var(--m3e-space-12); padding:var(--m3e-space-2) var(--m3e-space-3); border-radius:var(--shape-corner-m); color:var(--on-surface-variant); font:var(--m3e-type-label-large); cursor:pointer; }
+#display-setting .ireina-wallpaper-option.is-selected { background:var(--secondary-container); color:var(--on-secondary-container); }
+#display-setting .ireina-wallpaper-option span { flex:1; }
+#display-setting .ireina-wallpaper-option input { position:absolute; width:1px; height:1px; opacity:0; }
+#display-setting .ireina-wallpaper-option:has(input:focus-visible) { outline:2px solid var(--primary); outline-offset:2px; }
+#display-setting .ireina-settings-slider { display:flex; flex-direction:column; padding:var(--m3e-space-2); border-radius:var(--shape-corner-m); background:var(--surface-container); gap:var(--m3e-space-1); color:var(--on-surface-variant); font:var(--m3e-type-label-large); }
+#display-setting .ireina-settings-slider > span { display:flex; justify-content:space-between; align-items:center; gap:var(--m3e-space-2); }
+#display-setting .ireina-settings-slider output { font:var(--m3e-type-label-small); font-variant-numeric:tabular-nums; }
+/* Mizuki's effect track is 1.5rem (24px), with no visible thumb.
+   Keep a separate 48px transparent hit area; only the painted track shrinks. */
+#display-setting .ireina-settings-slider input { appearance:none; width:100%; min-width:0; height:calc(var(--m3e-space-6) * 2); flex:0 0 calc(var(--m3e-space-6) * 2); margin-block:calc(-1 * var(--m3e-space-3)); padding:0; border:0; background:transparent; cursor:pointer; }
+#display-setting .ireina-settings-slider input::-webkit-slider-runnable-track { height:var(--m3e-space-6); border-radius:calc(var(--shape-corner-m) / 2); background:linear-gradient(to right,var(--primary) var(--ireina-range-progress),var(--surface-container-highest) var(--ireina-range-progress)); }
+#display-setting .ireina-settings-slider input::-moz-range-track { height:var(--m3e-space-6); border-radius:calc(var(--shape-corner-m) / 2); background:linear-gradient(to right,var(--primary) var(--ireina-range-progress),var(--surface-container-highest) var(--ireina-range-progress)); }
+#display-setting .ireina-settings-slider input::-webkit-slider-thumb { appearance:none; width:0; height:0; border:0; border-radius:0; background:transparent; box-shadow:none; }
+#display-setting .ireina-settings-slider input::-moz-range-thumb { width:0; height:0; border:0; border-radius:0; background:transparent; box-shadow:none; }
+#display-setting .ireina-settings-slider input:focus-visible { outline:2px solid var(--primary); outline-offset:2px; border-radius:var(--shape-corner-s); }
+#display-setting .ireina-settings-native-toggle { display:flex; align-items:center; justify-content:space-between; gap:var(--m3e-space-3); min-height:var(--m3e-space-12); color:var(--on-surface); font:var(--m3e-type-label-large); cursor:pointer; }
+#display-setting .ireina-settings-native-toggle > span { display:flex; align-items:center; gap:var(--m3e-space-3); min-width:0; }
+#display-setting .ireina-settings-native-toggle small { display:block; margin-top:var(--m3e-space-1); color:var(--on-surface-variant); font:var(--m3e-type-body-small); }
+#display-setting .ireina-settings-native-toggle input { appearance:none; flex-shrink:0; width:calc(var(--m3e-space-10) + var(--m3e-space-3)); height:var(--m3e-space-8); border:2px solid var(--outline); border-radius:var(--shape-corner-full); background:var(--surface-container-highest); cursor:pointer; position:relative; transition:background-color var(--m3e-duration-short) var(--m3e-easing-standard); }
+#display-setting .ireina-settings-native-toggle input::before { content:""; position:absolute; width:var(--m3e-space-5); height:var(--m3e-space-5); border-radius:var(--shape-corner-full); top:var(--m3e-space-1); left:var(--m3e-space-1); background:var(--outline); transition:transform var(--m3e-duration-short) var(--m3e-easing-standard); }
+#display-setting .ireina-settings-native-toggle input:checked { background:var(--primary); border-color:var(--primary); }
+#display-setting .ireina-settings-native-toggle input:checked::before { background:var(--on-primary); transform:translateX(var(--m3e-space-5)); }
+#display-setting .ireina-settings-native-toggle input:focus-visible { outline:2px solid var(--primary); outline-offset:3px; }
+#display-setting .ireina-settings-section svg { width:var(--m3e-space-5); height:var(--m3e-space-5); flex-shrink:0; }
+#display-setting .ireina-source-option { min-height:calc(var(--m3e-space-6) * 2); }
+#display-setting .ireina-source-option .ireina-source-name { min-width:0; overflow-wrap:anywhere; }
+#display-setting .ireina-source-option .ireina-source-tags { display:flex; flex:0 0 auto; gap:var(--m3e-space-1); }
+#display-setting .ireina-source-tags small { font:var(--m3e-type-label-small); padding:var(--m3e-space-1); border-radius:var(--shape-corner-xs); background:var(--surface-container); color:var(--on-surface-variant); }
+#display-setting .ireina-source-next { display:flex; align-items:center; justify-content:center; gap:var(--m3e-space-2); min-height:calc(var(--m3e-space-6) * 2); border:0; border-radius:var(--shape-corner-m); background:var(--secondary-container); color:var(--on-secondary-container); font:var(--m3e-type-label-large); cursor:pointer; }
+#display-setting .ireina-source-next:disabled { opacity:.38; cursor:default; }
+#display-setting .ireina-source-status, #display-setting .ireina-source-hint { margin:0; color:var(--on-surface-variant); font:var(--m3e-type-body-small); overflow-wrap:anywhere; }
+#display-setting .ireina-source-status:empty { display:none; }
