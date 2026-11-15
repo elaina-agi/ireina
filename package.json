@@ -6,7 +6,7 @@
   "packageManager": "pnpm@12.6.0",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && ./scripts/postbuild.sh",
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check --minimumSeverity warning",
