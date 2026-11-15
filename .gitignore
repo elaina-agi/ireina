@@ -80,3 +80,9 @@ artifacts/shirone-ai-*
 # wrangler 本地文件
 .dev.vars
 .wrangler/
+
+# AI 工具说明和开发笔记（不公开）
+AGENTS.md
+docs/optimization-review.md
+docs/albums/AGENTS.md
+src/i18n/AGENTS.md
