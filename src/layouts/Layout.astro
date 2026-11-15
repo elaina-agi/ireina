@@ -409,3 +409,8 @@ const setup = () => {
 if (window.swup) setup();
 else document.addEventListener("swup:enable", setup);
 </script>
+
+<script>
+import { inject } from '@vercel/analytics';
+inject();
+</script>
