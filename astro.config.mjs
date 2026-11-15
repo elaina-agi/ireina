@@ -4,6 +4,7 @@ import { appearanceOverlay } from "./src/appearance/overlay.mjs";
 import { motionPlugin } from "./src/motion/plugin.mjs";
 import { friendApplyDevServer } from "./src/friends/dev-server.mjs";
 import { twikooDevServer } from "./src/comment/dev-server.mjs";
+import { preserveRobotsTxt } from "./scripts/preserve-robots.mjs";
 import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL(".", import.meta.url));
@@ -57,5 +58,6 @@ export default defineConfig({
       // components: { "atoms/blog/PostCard": "./src/components/PostCard.astro" },
     }),
     extras,
+    preserveRobotsTxt(),
   ],
 });

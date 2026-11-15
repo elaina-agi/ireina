@@ -3,14 +3,34 @@
 # 允许所有友好的搜索引擎爬虫
 User-agent: *
 Allow: /
+Allow: /posts/
+Allow: /archives/
+Allow: /categories/
+Allow: /tags/
+Allow: /about/
+Allow: /friends/
 
-# 限制爬取频率，避免过度消耗资源
-Crawl-delay: 10
-
-# 不索引这些路径
+# 禁止索引这些路径
 Disallow: /api/
 Disallow: /_astro/
 Disallow: /.well-known/
+Disallow: /search.json
+Disallow: /*?*  # 带查询参数的页面
+
+# 特殊爬虫：AI 训练数据抓取器（可选择禁止）
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: CCBot
+User-agent: anthropic-ai
+User-agent: Claude-Web
+User-agent: cohere-ai
+Disallow: /
+
+# 百度爬虫（如果不需要百度收录可以禁止，百度爬虫比较激进）
+User-agent: Baiduspider
+Crawl-delay: 5
+Disallow: /api/
+Disallow: /_astro/
 
 # 站点地图
 Sitemap: https://blog.eriiagi.com/sitemap-index.xml
