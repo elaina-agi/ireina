@@ -30,9 +30,9 @@ import { withUserConfig } from "@/utils/config-overlay.ts";
  */
 export const commentConfig: CommentConfig = withUserConfig("comment", {
 	/** 全局评论总开关：false 时完全不加载评论脚本与 DOM */
-	enable: false,
+	enable: true,
 	/** 评论提供商类型："none" | "twikoo" | "giscus" */
-	provider: "none",
+	provider: "twikoo",
 	/** 是否开启视口懒加载：滚动进入视口才动态加载评论组件（推荐 true） */
 	lazy: true,
 	/** Twikoo 专有配置 */
