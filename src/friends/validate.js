@@ -42,10 +42,19 @@ export function validateApplication(input) {
   for (const field of FIELDS) {
     const value = clean(input?.[field]);
     values[field] = value;
-    if (!value) errors[field] = "required";
-    else if (value.length > LIMITS[field]) errors[field] = "too_long";
-    else if ((field === "url" || field === "avatar") && !isHttpUrl(value)) errors[field] = "url";
-    else if (field === "email" && !EMAIL.test(value)) errors[field] = "email";
+
+    // 只有 url 和 email 是必填的，其他可选
+    const isRequired = field === "url" || field === "email";
+
+    if (!value && isRequired) {
+      errors[field] = "required";
+    } else if (value && value.length > LIMITS[field]) {
+      errors[field] = "too_long";
+    } else if (value && (field === "url" || field === "avatar") && !isHttpUrl(value)) {
+      errors[field] = "url";
+    } else if (value && field === "email" && !EMAIL.test(value)) {
+      errors[field] = "email";
+    }
   }
   return { values, errors };
 }
