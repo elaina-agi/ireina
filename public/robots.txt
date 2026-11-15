@@ -1,0 +1,16 @@
+# robots.txt for blog.eriiagi.com
+
+# 允许所有友好的搜索引擎爬虫
+User-agent: *
+Allow: /
+
+# 限制爬取频率，避免过度消耗资源
+Crawl-delay: 10
+
+# 不索引这些路径
+Disallow: /api/
+Disallow: /_astro/
+Disallow: /.well-known/
+
+# 站点地图
+Sitemap: https://blog.eriiagi.com/sitemap-index.xml
